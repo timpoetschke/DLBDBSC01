@@ -1,0 +1,35 @@
+# ----------------------------------------------------------
+# 01_import_gdp_data.R
+# Projekt: GDP Datenimport und Vorbereitung
+# Autor: [Dein Name]
+# Datum: [heutiges Datum]
+# Beschreibung: Einlesen des "data"-Sheets aus "gdp_raw.xls" und Speicherung
+# ----------------------------------------------------------
+
+# 1. Arbeitsumgebung aufräumen
+rm(list = ls())
+
+# 2. Notwendige Pakete installieren (nur falls nötig) und laden
+if (!requireNamespace("readxl", quietly = TRUE)) {
+  install.packages("readxl")
+}
+library(readxl)
+
+# 3. Arbeitsverzeichnis prüfen
+getwd()  # Sollte /cloud/project/ sein (Posit Cloud)
+
+# 4. GDP-Daten einlesen
+# - Arbeitsblatt "data"
+# - Überspringen der ersten 3 Zeilen (nur Metadaten)
+gdp_data <- read_excel(
+  path = "gdp_raw.xls",
+  sheet = "Data",
+  skip = 3
+)
+
+# 5. Überblick über die Struktur und erste Zeilen
+str(gdp_data)
+head(gdp_data)
+
+# 6. Daten als RData-Datei speichern
+save(gdp_data, file = "gdp_data.RData")

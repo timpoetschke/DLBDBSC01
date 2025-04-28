@@ -1,0 +1,33 @@
+# ----------------------------------------------------------
+# Projekt: GDP-Daten aus Excel einlesen
+# Autor: [Dein Name]
+# Datum: [heutiges Datum]
+# Beschreibung: Einlesen der World Bank GDP-Daten (gdp.xls)
+# ----------------------------------------------------------
+
+# 1. Arbeitsumgebung aufräumen
+rm(list = ls())
+
+# 2. Notwendige Pakete installieren (nur falls noch nicht vorhanden) und laden
+# Wichtig: 'readxl' ist Standard für Excel-Dateien (.xls, .xlsx)
+if (!requireNamespace("readxl", quietly = TRUE)) {
+  install.packages("readxl")
+}
+library(readxl)
+
+# 3. Arbeitsverzeichnis prüfen
+getwd()
+
+# 4. Excel-Datei einlesen
+# Annahme: Die Datei 'gdp.xls' liegt im Hauptprojektordner
+gdp_data <- read_excel("gdp.xls")
+
+# 5. Überblick über die Struktur der eingelesenen Daten
+str(gdp_data)
+
+# 6. Ersten Eindruck der Daten
+head(gdp_data)
+
+# Hinweise:
+# - 'read_excel' erkennt die erste Zeile automatisch als Header
+# - keine Probleme mit Kommas oder Anführungszeichen wie bei .csv

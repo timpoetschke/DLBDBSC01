@@ -1,0 +1,67 @@
+# ----------------------------------------------------------
+# Projekt: GDP-Daten aus Excel einlesen
+# Autor: [Dein Name]
+# Datum: [heutiges Datum]
+# Beschreibung: Einlesen der World Bank GDP-Daten (gdp.xls)
+# ----------------------------------------------------------
+
+# 1. Arbeitsumgebung aufräumen
+rm(list = ls())
+
+# 2. Notwendige Pakete installieren (nur falls noch nicht vorhanden) und laden
+# Wichtig: 'readxl' ist Standard für Excel-Dateien (.xls, .xlsx)
+if (!requireNamespace("readxl", quietly = TRUE)) {
+  install.packages("readxl")
+}
+library(readxl)
+
+# 3. Arbeitsverzeichnis prüfen
+getwd()
+
+# 4. Excel-Datei einlesen
+# Annahme: Die Datei 'gdp.xls' liegt im Hauptprojektordner
+gdp_data <- read_excel("gdp.xls")
+
+# 5. Überblick über die Struktur der eingelesenen Daten
+str(gdp_data)
+
+# 6. Ersten Eindruck der Daten
+head(gdp_data)
+
+# Hinweise:
+# - 'read_excel' erkennt die erste Zeile automatisch als Header
+# - keine Probleme mit Kommas oder Anführungszeichen wie bei .csv
+
+
+
+# ----------------------------------------------------------
+# 1. Filterung: Nur das Jahr 2015 betrachten
+gdp_2015 <- gdp_data[, c("Country Name", "2015")]
+
+# 2. Umbenennen der Spalten für bessere Lesbarkeit
+colnames(gdp_2015) <- c("Country", "GDP_2015")
+
+# 3. Entfernen von Ländern ohne GDP-Daten (NA)
+gdp_2015 <- na.omit(gdp_2015)
+
+# 4. Sortieren nach GDP, absteigend
+gdp_2015_sorted <- gdp_2015[order(-gdp_2015$GDP_2015), ]
+
+# 5. Top 5 Länder auswählen
+gdp_top5_2015 <- head(gdp_2015_sorted, 5)
+
+# 6. Bibliothek für Plot laden (ggplot2 für schöneres Design)
+if (!requireNamespace("ggplot2", quietly = TRUE)) {
+  install.packages("ggplot2")
+}
+library(ggplot2)
+
+# 7. Plot erstellen
+ggplot(gdp_top5_2015, aes(x = reorder(Country, GDP_2015), y = GDP_2015)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +  # Länder untereinander (bessere Lesbarkeit)
+  labs(title = "Top 5 Länder mit höchstem GDP 2015",
+       x = "Land",
+       y = "GDP pro Kopf (current US$)") +
+  theme_minimal()
+

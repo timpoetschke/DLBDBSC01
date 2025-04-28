@@ -1,0 +1,38 @@
+# ----------------------------------------------------------
+# 02_analysis_gdp_2015_plot.R
+# Projekt: Analyse der GDP-Daten für das Jahr 2015
+# Autor: [Dein Name]
+# Datum: [heutiges Datum]
+# Beschreibung: Filtern, Sortieren und Plotten der Top 5 Länder
+# ----------------------------------------------------------
+
+# 1. Arbeitsumgebung aufräumen
+rm(list = ls())
+
+# 2. Bibliotheken laden
+library(ggplot2)
+
+# 3. GDP-Daten laden
+# ACHTUNG: '01_import_gdp_data.R' muss vorher ausgeführt worden sein
+load("gdp_data.RData")  # lädt das Objekt 'gdp_data'
+
+# 4. Filterung: Nur das Jahr 2015 betrachten
+gdp_2015 <- gdp_data[, c("Country Name", "2015")]
+
+# 5. Spalten umbenennen
+colnames(gdp_2015) <- c("Country", "GDP_2015")
+
+# 6. Entfernen von NA-Werten
+gdp_2015 <- na.omit(gdp_2015)
+
+# 7. Sortieren und Auswahl der Top 5
+gdp_top5_2015 <- gdp_2015[order(-gdp_2015$GDP_2015), ][1:5, ]
+
+# 8. Erstellung des Plots
+ggplot(gdp_top5_2015, aes(x = reorder(Country, GDP_2015), y = GDP_2015)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Top 5 Länder mit höchstem GDP 2015",
+       x = "Land",
+       y = "GDP pro Kopf (current US$)") +
+  theme_minimal()

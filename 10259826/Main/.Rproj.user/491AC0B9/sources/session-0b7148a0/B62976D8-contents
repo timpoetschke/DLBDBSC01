@@ -1,0 +1,41 @@
+rm(list = ls())
+
+if (!requireNamespace("readxl", quietly = TRUE)) {
+  install.packages("readxl")
+}
+library(readxl)
+
+getwd()
+
+gdp_per_capita <- read_excel(
+  path = "input/gdp_per_capita_raw.xls",
+  sheet = "Data",
+  skip = 3
+)
+
+str(gdp_per_capita)
+head(gdp_per_capita)
+
+save(gdp_per_capita, file = "output/gdp_per_capita.RData")
+
+fertility_rate <- read_excel(
+  path = "input/fertility_rate_raw.xls",
+  sheet = "Data",
+  skip = 3
+)
+
+str(fertility_rate)
+head(fertility_rate)
+
+save(fertility_rate, file = "output/fertility_rate.RData")
+
+life_expectancy <- read_excel(
+  path = "input/life_expectancy_raw.xls",
+  sheet = "Data",
+  skip = 3
+)
+
+str(life_expectancy)
+head(life_expectancy)
+
+save(life_expectancy, file = "output/life_expectancy.RData")
